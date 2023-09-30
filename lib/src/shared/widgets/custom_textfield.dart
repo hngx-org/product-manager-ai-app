@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,55 +23,55 @@ class CustomTextField extends HookWidget {
   Widget build(BuildContext context) {
     final isObscure = useState<bool>(textObscured);
 
-    void toggleObscure() {
-      isObscure.value = false;
-      Future.delayed(obscureTimerDuration, () {
-        isObscure.value = true;
-      });
-    }
-
-    return TextField(
-      controller: controller,
-      obscureText: isObscure.value,
-      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontWeight: FontWeight.w400,
-          ),
-      decoration: InputDecoration(
-        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+    return SizedBox(
+      height: 45.h,
+      child: TextField(
+        controller: controller,
+        obscureText: isObscure.value,
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontWeight: FontWeight.w400,
-              color: AppColors.greyTextColor,
             ),
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: const BorderSide(
-            color: AppColors.secondaryColor,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+            horizontal: 8.0,
           ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: const BorderSide(
-            color: AppColors.errorColor,
+          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontWeight: FontWeight.w400,
+                color: AppColors.greyTextColor,
+              ),
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
           ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(
+              color: AppColors.secondaryColor,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(
+              color: AppColors.errorColor,
+            ),
+          ),
+          fillColor: Colors.white,
+          hintText: hintText,
+          suffixIcon: textObscured
+              ? IconButton(
+                  icon: isObscure.value
+                      ? SvgPicture.asset(
+                          'eye-open'.svg,
+                        )
+                      : SvgPicture.asset(
+                          'eye-closed'.svg,
+                        ),
+                  onPressed: () => isObscure.value = !isObscure.value,
+                )
+              : null,
         ),
-        fillColor: Colors.white,
-        hintText: hintText,
-        suffixIcon: textObscured
-            ? IconButton(
-                icon: isObscure.value
-                    ? SvgPicture.asset(
-                        'eye-open'.svg,
-                      )
-                    : SvgPicture.asset(
-                        'eye-closed'.svg,
-                      ),
-                onPressed: () => toggleObscure(),
-              )
-            : null,
       ),
     );
   }
