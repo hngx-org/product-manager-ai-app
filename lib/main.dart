@@ -20,11 +20,14 @@ class DayPilot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      // systemNavigationBarColor: Colors.blue, // navigation bar color
-      statusBarColor:
-          AppColors.greyTextColor.withOpacity(0.4), // status bar color
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        // systemNavigationBarColor: Colors.blue,
+        // navigation bar color
+        statusBarColor:
+            AppColors.greyTextColor.withOpacity(0.4), // status bar color
+      ),
+    );
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,

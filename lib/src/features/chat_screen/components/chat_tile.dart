@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:product_management_ai_app/src/core/constants/app_color.dart';
 import 'package:product_management_ai_app/src/core/models/chat_model.dart';
 
 class ChatTile extends StatelessWidget {
@@ -18,7 +19,7 @@ class ChatTile extends StatelessWidget {
               children: [
                 const CircleAvatar(
                   radius: 20,
-                  backgroundColor: Color.fromRGBO(95, 118, 238, 1),
+                  backgroundColor: AppColors.primaryColor,
                   backgroundImage: AssetImage('assets/images/profile_pic.png'),
                 ),
                 Center(

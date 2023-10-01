@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:flip_card/flip_card.dart';
@@ -22,7 +21,6 @@ class OnbaordingScreen extends HookWidget {
     useEffect(() {
       final timer = Timer.periodic(const Duration(seconds: 6), (timer) {
         controller.toggleCard();
-        hasToggled.value = !hasToggled.value;
       });
 
       return () {
@@ -36,7 +34,7 @@ class OnbaordingScreen extends HookWidget {
           Padding(
             padding: EdgeInsets.all(10.0.w),
             child: FlipCard(
-              // onFlip: ,
+              onFlipDone: (isFront) => hasToggled.value = !hasToggled.value,
               autoFlipDuration: const Duration(seconds: 6),
               controller: controller,
               direction: FlipDirection.VERTICAL,

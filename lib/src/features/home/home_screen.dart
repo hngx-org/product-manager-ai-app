@@ -1,316 +1,91 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/features/chat_screen/chat_screen.dart';
+import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
+import 'package:product_management_ai_app/src/shared/shared.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: customAppBar(
+        context,
+        title: 'Home',
+        isBackButton: false,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        backgroundColor: AppColors.primaryColor,
+        foregroundColor: Colors.white,
+        label: Text(
+          'Start a new chat',
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: Colors.white,
+              ),
+        ),
+      ),
+      body: ListView.builder(
+        itemCount: productManagementPrompts.length,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (_, index) {
+          return CardWidget(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ChatScreen(),
+              ),
+            ),
+            text: productManagementPrompts[index],
+            isLast: index == productManagementPrompts.length - 1,
+          );
+        },
+      ),
+    );
+  }
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
-
-
-  //For the Prompts Questions
-  late final AnimationController _controller = AnimationController(
-    duration: Duration(seconds: 3),
-    vsync: this,
-  );
-
-  late final Animation<double> _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn
-  );
-
-  //For the 'Start chat' button
-  late final AnimationController _controller1 = AnimationController(
-    duration: Duration(seconds: 5),
-    vsync: this,
-  );
-
-  late final Animation<double> _animation1 = CurvedAnimation(
-      parent: _controller1,
-      curve: Curves.easeIn
-  );
-
-
-
-  bool showText = false;
-  bool showContainer = false;
-
-
-  @override
-  void initState() {
-    _controller.forward();
-    Future.delayed(Duration(milliseconds: 3000),(){
-      setState(() {
-        showText = true;
-      });
-    });
-    _controller1.repeat(reverse: true);
-    Future.delayed(Duration(seconds: 4),(){
-      setState(() {
-        showContainer = true;
-      });
-    });
-
-
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _controller1.dispose();
-    // TODO: implement dispose
-    super.dispose();
-  }
-
+class CardWidget extends StatelessWidget {
+  final String text;
+  final bool isLast;
+  final VoidCallback onTap;
+  const CardWidget({
+    super.key,
+    required this.text,
+    this.isLast = false,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-            child: Text('AI Product Manager')
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 8,
+          bottom: isLast ? 100 : 8,
         ),
-        leading:  IconButton(
-          onPressed: (){
-            //Drawer Page
-            print('Drawer Page');
-          },
-            icon: Icon(Icons.menu)
+        padding: const EdgeInsets.all(12.0),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            )
+          ],
         ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: size.height * 0.68,
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 30,
-                    right: 20,
-                    left: 20,
-                    child: FadeTransition(
-                      opacity: _animation,
-                      child: GestureDetector(
-                        onTap: (){
-
-                          //API Call
-
-                        },
-                        child: Material(
-                          elevation: 3,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            width: size.width,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.purple,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20, left: 10),
-                              child: DefaultTextStyle(
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white
-                                  ),
-                                  child: showText?AnimatedTextKit(
-                                    repeatForever: false,
-                                      totalRepeatCount: 1,
-                                      animatedTexts: [
-                                        TypewriterAnimatedText(
-                                          'What does Product Management mean?',
-                                          speed: Duration(milliseconds: 50)
-                                        )
-                                      ]
-                                  ): Text('')
-                              ),
-                            ),
-
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-                Positioned(
-                  top: 140,
-                    left: 20,
-                    right: 20,
-                    child: FadeTransition(
-                      opacity: _animation,
-                      child: GestureDetector(
-                        onTap: (){
-
-                          //API Call
-
-                        },
-                        child: Material(
-                          elevation: 3,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            width: size.width,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.purple,
-                              borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20, left: 10),
-                              child: DefaultTextStyle(
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white
-                                ),
-                                child: showText? AnimatedTextKit(
-                                  repeatForever: false,
-                                  totalRepeatCount: 1,
-                                  animatedTexts: [
-                                    TypewriterAnimatedText(
-                                        'Who is a Product manager?',
-                                        speed: Duration(milliseconds: 50)
-                                    )
-                                  ],
-                                ): Text('')
-                              ),
-                            )
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-                Positioned(
-                    top: 250,
-                    left: 20,
-                    right: 20,
-                    child: FadeTransition(
-                      opacity: _animation,
-                      child: GestureDetector(
-                        onTap: (){
-
-                          //API Call
-
-                        },
-                        child: Material(
-                          elevation: 3,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                              width: size.width,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                  color: Colors.purple,
-                                  borderRadius: BorderRadius.circular(20)
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 20, left: 10),
-                                child: DefaultTextStyle(
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white
-                                    ),
-                                    child: showText? AnimatedTextKit(
-                                      repeatForever: false,
-                                      totalRepeatCount: 1,
-                                      animatedTexts: [
-                                        TypewriterAnimatedText(
-                                            'Internship Stage 5',
-                                            speed: Duration(milliseconds: 50)
-                                        )
-                                      ],
-                                    ): Text('')
-                                ),
-                              )
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-                Positioned(
-                    top: 360,
-                    left: 20,
-                    right: 20,
-                    child: FadeTransition(
-                      opacity: _animation,
-                      child: GestureDetector(
-                        onTap: (){
-
-                          //API Call
-
-                        },
-                        child: Material(
-                          elevation: 3,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                              width: size.width,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                  color: Colors.purple,
-                                  borderRadius: BorderRadius.circular(20)
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 20, left: 10),
-                                child: DefaultTextStyle(
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white
-                                    ),
-                                    child: showText? AnimatedTextKit(
-                                      repeatForever: false,
-                                      totalRepeatCount: 1,
-                                      animatedTexts: [
-                                        TypewriterAnimatedText(
-                                            'Dummy Data',
-                                            speed: Duration(milliseconds: 50)
-                                        )
-                                      ],
-                                    ): Text('')
-                                ),
-                              )
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
-
-          showContainer? GestureDetector(
-            onTap: (){
-              //Navigation to the next screen
-              print('Navigate');
-            },
-            child: FadeTransition(
-              opacity: _animation1,
-              child: Material(
-                elevation: 3,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  width: 300,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xffDB74D7)
-                  ),
-                  child: const Center(
-                    child: DefaultTextStyle(
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white
-                      ),
-                      child: Text('Start Chat'),
-
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            ): Container(),
-        ],
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(),
+        ),
       ),
     );
   }
