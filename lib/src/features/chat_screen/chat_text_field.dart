@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:product_management_ai_app/src/core/core.dart';
 
 class ChatTextField extends StatelessWidget {
   final TextEditingController chatText;
@@ -16,7 +17,7 @@ class ChatTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+      // padding: const EdgeInsets.
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30.0),
@@ -34,20 +35,23 @@ class ChatTextField extends StatelessWidget {
       child: TextField(
         controller: chatText,
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 16.0,
+          ),
           hintText: 'Type your message...',
           hintStyle: const TextStyle(color: Color.fromRGBO(153, 157, 169, 1)),
           suffixIcon: IconButton(
             icon: const Icon(
               Icons.send,
-              color: Color.fromRGBO(95, 118, 238, 1),
+              color: AppColors.primaryColor,
             ),
-            onPressed: chatText.text.isEmpty
-                ? null
-                : () {
-                    final message = chatText.text;
-                    chatText.clear();
-                    sendChat(message);
-                  },
+            onPressed: () {
+              final message = chatText.text;
+              chatText.clear();
+              FocusManager.instance.primaryFocus?.unfocus();
+              sendChat(message);
+            },
           ),
           border: border,
           enabledBorder: border,
