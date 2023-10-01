@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class ChatTextField extends StatelessWidget {
   final TextEditingController chatText;
   final Function sendChat;
+  final bool loading;
   const ChatTextField(
-      {super.key, required this.chatText, required this.sendChat});
+      {super.key,
+      required this.chatText,
+      required this.sendChat,
+      required this.loading});
 
   final border = const UnderlineInputBorder(
     borderSide: BorderSide(
@@ -41,18 +48,20 @@ class ChatTextField extends StatelessWidget {
           ),
           hintText: 'Type your message...',
           hintStyle: const TextStyle(color: Color.fromRGBO(153, 157, 169, 1)),
-          suffixIcon: IconButton(
-            icon: const Icon(
-              Icons.send,
-              color: AppColors.primaryColor,
-            ),
-            onPressed: () {
-              final message = chatText.text;
-              chatText.clear();
-              FocusManager.instance.primaryFocus?.unfocus();
-              sendChat(message);
-            },
-          ),
+          suffixIcon: !loading
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.send,
+                    color: AppColors.primaryColor,
+                  ),
+                  onPressed: () {
+                    final message = chatText.text;
+                    chatText.clear();
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    sendChat(message);
+                  },
+                )
+              : Lottie.asset('text'.json, height: 40.h),
           border: border,
           enabledBorder: border,
           focusedBorder: border,

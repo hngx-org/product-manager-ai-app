@@ -10,7 +10,8 @@ import 'package:product_management_ai_app/src/features/chat_screen/components/ch
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class ChatScreen extends HookWidget {
-  const ChatScreen({super.key});
+  final String? userMessage;
+  const ChatScreen({this.userMessage, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,22 +20,40 @@ class ChatScreen extends HookWidget {
     final isLoading = useState<bool>(true);
 
     useEffect(() {
-      Future.delayed(const Duration(seconds: 3), () {
+      if (userMessage!.isNotEmpty) {
         messages.value.insert(
           0,
           ChatMessage(
-            text: 'Hello! I am the AI.',
-            type: MessageType.ai,
+            text: userMessage as String,
+            type: MessageType.user,
             timestamp: DateTime.now(),
           ),
         );
-        isLoading.value = false;
-      });
+      } else {
+        Future.delayed(const Duration(seconds: 3), () {
+          messages.value.insert(
+            0,
+            ChatMessage(
+              text: 'Hello! How can I assist you today?',
+              type: MessageType.ai,
+              timestamp: DateTime.now(),
+            ),
+          );
+          isLoading.value = false;
+        });
+      }
       return null;
     }, []);
 
     void sendChat(String text) {
       final lowercasedText = text.toLowerCase();
+      final List<String> greetings = [
+        "hi",
+        "hello",
+        "hey",
+        "hi there",
+        "hey there",
+      ];
 
       bool containsProductManagementKeyword = productManagementTerms.any(
         (keyword) => lowercasedText.contains(keyword.toLowerCase()),
@@ -51,6 +70,23 @@ class ChatScreen extends HookWidget {
         Future.delayed(const Duration(seconds: 3), () {
           isLoading.value = false;
         });
+      } else if (greetings.contains(lowercasedText)) {
+        final chat = ChatMessage(
+          text: text,
+          type: MessageType.user,
+          timestamp: DateTime.now(),
+        );
+        messages.value.insert(0, chat);
+        isLoading.value = true;
+        Future.delayed(const Duration(seconds: 3), () {
+          isLoading.value = false;
+          final chat = ChatMessage(
+            text: "Hello! How can I assist you today?",
+            type: MessageType.ai,
+            timestamp: DateTime.now(),
+          );
+          messages.value.insert(0, chat);
+        });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -64,11 +100,6 @@ class ChatScreen extends HookWidget {
 
     log('messages.value: ${messages.value}');
     return Scaffold(
-      appBar: customAppBar(
-        context,
-        title: 'Chat',
-        isBackButton: true,
-      ),
       body: Column(
         children: [
           Expanded(
@@ -95,7 +126,11 @@ class ChatScreen extends HookWidget {
               },
             ),
           ),
-          ChatTextField(chatText: chatText, sendChat: sendChat)
+          ChatTextField(
+            chatText: chatText,
+            sendChat: sendChat,
+            loading: isLoading.value,
+          )
         ],
       ),
     );

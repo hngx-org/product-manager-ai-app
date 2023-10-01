@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/features/chat_screen/chat_screen.dart';
+import 'package:product_management_ai_app/src/features/chat_screen/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
@@ -10,13 +11,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(
-        context,
-        title: 'Home',
-        isBackButton: false,
-      ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HiddenDrawer(
+                userMessage: "",
+                pageIndex: 1,
+              ),
+            ),
+          );
+        },
         backgroundColor: AppColors.primaryColor,
         foregroundColor: Colors.white,
         label: Text(
@@ -28,13 +34,17 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: productManagementPrompts.length,
+        padding: const EdgeInsets.only(top: 10),
         physics: const BouncingScrollPhysics(),
         itemBuilder: (_, index) {
           return CardWidget(
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ChatScreen(),
+                builder: (context) => HiddenDrawer(
+                  userMessage: productManagementPrompts[index],
+                  pageIndex: 1,
+                ),
               ),
             ),
             text: productManagementPrompts[index],

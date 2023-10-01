@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/features/chat_screen/chat_screen.dart';
 import 'package:product_management_ai_app/src/features/home/home_screen.dart';
 
 class HiddenDrawer extends StatefulWidget {
-  const HiddenDrawer({super.key});
+  final String? userMessage;
+  final int pageIndex;
+  const HiddenDrawer({super.key, this.userMessage, required this.pageIndex});
 
   @override
   State<HiddenDrawer> createState() => _HiddenDrawerState();
@@ -30,26 +33,38 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
           name: "Home",
           baseStyle: textStyle,
           selectedStyle: textStyle,
-          colorLineSelected: Colors.deepPurple,
+          colorLineSelected: AppColors.primaryColor,
         ),
         const HomeScreen(),
-      )
+      ),
+      ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: "Chat with AI",
+          baseStyle: textStyle,
+          selectedStyle: textStyle,
+          colorLineSelected: AppColors.primaryColor,
+        ),
+        ChatScreen(userMessage: widget.userMessage ?? ""),
+      ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return HiddenDrawerMenu(
-      backgroundColorMenu: AppColors.scaffoldBackgroundColor,
+      backgroundColorMenu: AppColors.defaultColor,
+      backgroundColorContent: Colors.black,
       screens: _pages,
-      initPositionSelected: 0,
-      leadingAppBar: const Icon(Iconsax.menu),
+      initPositionSelected: widget.pageIndex,
+      styleAutoTittleName: const TextStyle(color: Colors.white),
+      leadingAppBar: const Icon(
+        Iconsax.menu,
+        color: Colors.white,
+      ),
       // elevationAppBar: 3,
       isTitleCentered: true,
-      disableAppBarDefault: true,
       slidePercent: 40,
-      backgroundColorAppBar: AppColors.scaffoldBackgroundColor,
-      tittleAppBar: const Text("AI"),
+      backgroundColorAppBar: AppColors.primaryColor,
     );
   }
 }
