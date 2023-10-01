@@ -6,7 +6,7 @@ import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/forgot_password.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/signup_screen.dart';
 import 'package:product_management_ai_app/src/features/authentication/widgets/finger_print_body.dart';
-import 'package:product_management_ai_app/src/features/dashboard/dashboard_screen.dart';
+import 'package:product_management_ai_app/src/features/chat_screen/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class LoginScreen extends HookConsumerWidget {
@@ -90,7 +90,7 @@ class LoginScreen extends HookConsumerWidget {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Dashboard(),
+                          builder: (context) => const HiddenDrawer(),
                         ),
                       ),
                     ),

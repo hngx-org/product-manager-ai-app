@@ -41,11 +41,13 @@ class ChatTextField extends StatelessWidget {
               Icons.send,
               color: Color.fromRGBO(95, 118, 238, 1),
             ),
-            onPressed: () {
-              final message = chatText.text;
-              chatText.clear();
-              sendChat(message);
-            },
+            onPressed: chatText.text.isEmpty
+                ? null
+                : () {
+                    final message = chatText.text;
+                    chatText.clear();
+                    sendChat(message);
+                  },
           ),
           border: border,
           enabledBorder: border,

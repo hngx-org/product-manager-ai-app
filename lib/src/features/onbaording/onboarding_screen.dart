@@ -21,7 +21,6 @@ class OnbaordingScreen extends HookWidget {
     useEffect(() {
       final timer = Timer.periodic(const Duration(seconds: 6), (timer) {
         controller.toggleCard();
-        hasToggled.value = !hasToggled.value;
       });
 
       return () {
@@ -35,9 +34,7 @@ class OnbaordingScreen extends HookWidget {
           Padding(
             padding: EdgeInsets.all(10.0.w),
             child: FlipCard(
-              onFlip: () {
-                hasToggled.value = !hasToggled.value;
-              },
+              onFlipDone: (isFront) => hasToggled.value = !hasToggled.value,
               autoFlipDuration: const Duration(seconds: 6),
               controller: controller,
               direction: FlipDirection.VERTICAL,
