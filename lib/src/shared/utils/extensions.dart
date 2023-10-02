@@ -123,5 +123,5 @@ extension FilePaths on String {
   String get jpg => 'assets/images/$this.jpg';
   String get jpeg => 'assets/images/$this.jpeg';
   String get gif => 'assets/images/$this.gif';
-  String get webp => 'assets/lotties/$this.json';
+  String get json => 'assets/lotties/$this.json';
 }

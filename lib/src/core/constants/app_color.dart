@@ -9,8 +9,5 @@ class AppColors {
   static const Color errorColor = Color(0xFFE74C3C);
   static const Color successColor = Color(0xFF2ECC71);
   static const Color warningColor = Color(0xFFF1C40F);
-
-  static const Color lowPriorityColor = Color(0xFF3498DB);
-  static const Color mediumPriorityColor = Color(0xFFE67E22);
-  static const Color highPriorityColor = Color(0xFFE74C3C);
+  static const Color defaultColor = Color(0xFF5F76EE);
 }

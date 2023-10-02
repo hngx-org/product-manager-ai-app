@@ -34,7 +34,7 @@ class OnbaordButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: GestureDetector(
+            child: InkWell(
               onTap: onLoginPressed,
               child: Container(
                 height: 40.h,
@@ -69,7 +69,7 @@ class OnbaordButton extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: GestureDetector(
+            child: InkWell(
               onTap: onSignUpPressed,
               child: Container(
                 height: 40.h,
