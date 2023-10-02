@@ -19,8 +19,8 @@ class ChatTile extends StatelessWidget {
               children: [
                 const CircleAvatar(
                   radius: 20,
-                  backgroundColor: AppColors.primaryColor,
-                  backgroundImage: AssetImage('assets/images/profile_pic.png'),
+                  backgroundColor: Color.fromRGBO(95, 118, 238, 1),
+                  backgroundImage: AssetImage('assets/images/icons8-bot.gif'),
                 ),
                 Center(
                   child: Container(

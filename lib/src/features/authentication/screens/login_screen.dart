@@ -90,7 +90,9 @@ class LoginScreen extends HookConsumerWidget {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HiddenDrawer(),
+                          builder: (context) => const HiddenDrawer(
+                            pageIndex: 0,
+                          ),
                         ),
                       ),
                     ),
