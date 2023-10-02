@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/screens.dart';
-import 'package:product_management_ai_app/src/features/dashboard/dashboard_screen.dart';
 import 'package:product_management_ai_app/src/features/onbaording/widgets/widgets.dart';
-import 'package:product_management_ai_app/src/shared/shared.dart';
+import 'package:product_management_ai_app/src/shared/utils/extensions.dart';
 
 class OnbaordingScreen extends HookWidget {
   const OnbaordingScreen({super.key});
@@ -29,86 +28,53 @@ class OnbaordingScreen extends HookWidget {
     }, []);
 
     return Scaffold(
-      body: SingleChildScrollView(
-        // Wrap with SingleChildScrollView
-        child: Column(
-          children: [
-            .05.sh.hi,
-            Padding(
-              padding: EdgeInsets.all(10.0.w),
-              child: FlipCard(
-                onFlipDone: (isFront) => hasToggled.value = !hasToggled.value,
-                autoFlipDuration: const Duration(seconds: 6),
-                controller: controller,
-                direction: FlipDirection.VERTICAL,
-                side: CardSide.FRONT,
-                front: const OnboardCard(
-                  imagePath: '1',
-                  isFront: true,
-                ),
-                back: const OnboardCard(
-                  imagePath: '2',
-                  isFront: false,
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10.0.w),
+            child: FlipCard(
+              onFlipDone: (isFront) => hasToggled.value = !hasToggled.value,
+              autoFlipDuration: const Duration(seconds: 6),
+              controller: controller,
+              direction: FlipDirection.VERTICAL,
+              side: CardSide.FRONT,
+              front: const OnboardCard(
+                imagePath: '1',
+                isFront: true,
+              ),
+              back: const OnboardCard(
+                imagePath: '2',
+                isFront: false,
               ),
             ),
-            .1.sh.hi,
-            hasToggled.value
-                ? const DescriptionCard(
-                    text:
-                        'Get your PM work done fasters||Duis leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Fusce a quam. Nullam sagittis.',
-                  )
-                : const DescriptionCard(
-                    text:
-                        'Welcome to Luna, your PM AI assistant||Duis leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Fusce a quam. Nullam sagittis.',
-                  ),
-            .07.sh.hi,
-            OnbaordButton(
-              onLoginPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
+          ),
+          hasToggled.value
+              ? const DescriptionCard(
+                  text:
+                      'Welcome to ProdGenius||Unlock the power of AI-driven Product Management. Get ready to streamline your product development process and make data-driven decisions like a pro!',
+                )
+              : const DescriptionCard(
+                  text:
+                      'Meet ProdWhiz: Your Product Management Assistant||Introducing ProdWhiz, your trusted AI companion for product management. Navigate the complexities of product development effortlessly and boost your productivity.',
                 ),
-              ),
-              onSignUpPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpScreen(),
-                ),
+          OnbaordButton(
+            onLoginPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
               ),
             ),
-            10.hi,
-            GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Dashboard(),
-                ),
-              ),
-              child: Container(
-                height: 40.h,
-                width: .8.sw,
-                margin: const EdgeInsets.only(bottom: 20.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    'Skip',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ),
+            onSignUpPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SignUpScreen(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ).padSymmetric(
+        vertical: 30.h,
       ),
     );
   }

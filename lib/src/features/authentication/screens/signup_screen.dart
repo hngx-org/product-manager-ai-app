@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hng_authentication/authentication.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/login_screen.dart';
@@ -11,8 +12,12 @@ class SignUpScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authRepository = Authentication();
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final nameController = useTextEditingController();
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -20,57 +25,89 @@ class SignUpScreen extends HookConsumerWidget {
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  children: [
-                    40.hi,
-                    Text(
-                      'Create Account',
-                      style:
-                          Theme.of(context).textTheme.headlineMedium!.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                    ),
-                    16.hi,
-                    Text(
-                      'Nulla consequat nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Aenean ut eros et nisl sagittis vestibulum.',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w400,
-                          ),
-                    ),
-                    40.hi,
-                    CustomTextField(
-                      controller: emailController,
-                      hintText: 'Email address',
-                    ),
-                    16.hi,
-                    CustomTextField(
-                      controller: passwordController,
-                      hintText: 'Password',
-                      textObscured: true,
-                    ),
-                    16.hi,
-                    CustomTextField(
-                      controller: passwordController,
-                      hintText: 'Confirm Password',
-                      textObscured: true,
-                    ),
-                    32.hi,
-                    CustomElevatedButton(
-                      text: 'Sign Up',
-                      onPressed: () {},
-                    ),
-                  ],
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      40.hi,
+                      Text(
+                        'Create Account',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      16.hi,
+                      Text(
+                        'Nulla consequat nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Aenean ut eros et nisl sagittis vestibulum.',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                      40.hi,
+                      CustomTextField(
+                        controller: nameController,
+                        hintText: 'Name',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                      ),
+                      16.hi,
+                      CustomTextField(
+                          controller: emailController,
+                          hintText: 'Email address',
+                          validator: (value) {
+                            final regex = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                            );
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!regex.hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      16.hi,
+                      CustomTextField(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          textObscured: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          }),
+                      32.hi,
+                      CustomElevatedButton(
+                        text: 'Sign Up',
+                        onPressed: () async {
+                          if (!formKey.currentState!.validate()) {
+                            return;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ),
-              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                );
+              },
               child: RichText(
                 text: TextSpan(
                   text: 'Have an account? ',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_management_ai_app/src/core/models/chat_model.dart';
+import 'package:product_management_ai_app/src/shared/utils/extensions.dart';
 
 class ChatTile extends StatelessWidget {
   final ChatMessage message;
@@ -16,10 +17,10 @@ class ChatTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 20,
-                  backgroundColor: Color.fromRGBO(95, 118, 238, 1),
-                  backgroundImage: AssetImage('assets/images/icons8-bot.gif'),
+                  backgroundColor: const Color.fromRGBO(95, 118, 238, 1),
+                  child: Image.asset('assets/images/icons8-bot.gif').padAll(3),
                 ),
                 Center(
                   child: Container(

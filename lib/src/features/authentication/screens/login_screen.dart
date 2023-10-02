@@ -16,7 +16,7 @@ class LoginScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
-
+    final formKey = useMemoized(() => GlobalKey<FormState>());
     useEffect(() {
       Future.delayed(const Duration(seconds: 2), () {
         if (true) {
@@ -32,81 +32,110 @@ class LoginScreen extends HookConsumerWidget {
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  children: [
-                    40.hi,
-                    Text(
-                      'Login',
-                      style:
-                          Theme.of(context).textTheme.headlineMedium!.copyWith(
-                                fontWeight: FontWeight.w700,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      40.hi,
+                      Text(
+                        'Login',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      16.hi,
+                      Text(
+                        'Get right back into your account.',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                      40.hi,
+                      CustomTextField(
+                          controller: emailController,
+                          hintText: 'Email address',
+                          validator: (value) {
+                            final regex = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                            );
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!regex.hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      16.hi,
+                      CustomTextField(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          textObscured: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          }),
+                      8.hi,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ForgotPassword(),
                               ),
-                    ),
-                    16.hi,
-                    Text(
-                      'Get right back into your account.',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w400,
+                            );
+                          },
+                          overlayColor: MaterialStateProperty.all(
+                            Colors.transparent,
                           ),
-                    ),
-                    40.hi,
-                    CustomTextField(
-                      controller: emailController,
-                      hintText: 'Email address',
-                    ),
-                    16.hi,
-                    CustomTextField(
-                      controller: passwordController,
-                      hintText: 'Password',
-                      textObscured: true,
-                    ),
-                    8.hi,
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPassword(),
-                          ),
-                        ),
-                        overlayColor: MaterialStateProperty.all(
-                          Colors.transparent,
-                        ),
-                        child: Text(
-                          'Forgot password?',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ).padOnly(
-                          top: 8.h,
-                          bottom: 8.h,
-                          left: 8.w,
-                        ),
-                      ),
-                    ),
-                    32.hi,
-                    CustomElevatedButton(
-                      text: 'Login',
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HiddenDrawer(
-                            pageIndex: 0,
+                          child: Text(
+                            'Forgot password?',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ).padOnly(
+                            top: 8.h,
+                            bottom: 8.h,
+                            left: 8.w,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      32.hi,
+                      CustomElevatedButton(
+                          text: 'Login',
+                          onPressed: () {
+                            if (!formKey.currentState!.validate()) {
+                              return;
+                            }
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HiddenDrawer(
+                                  pageIndex: 0,
+                                ),
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
                 ),
               ),
             ),
             InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpScreen(),
-                ),
-              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpScreen(),
+                  ),
+                );
+              },
               overlayColor: MaterialStateProperty.all(
                 Colors.transparent,
               ),
