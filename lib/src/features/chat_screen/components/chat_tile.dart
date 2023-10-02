@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:product_management_ai_app/src/core/constants/app_color.dart';
 import 'package:product_management_ai_app/src/core/models/chat_model.dart';
 
 class ChatTile extends StatelessWidget {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
-import 'package:product_management_ai_app/src/features/chat_screen/chat_screen.dart';
 import 'package:product_management_ai_app/src/features/chat_screen/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
-import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
