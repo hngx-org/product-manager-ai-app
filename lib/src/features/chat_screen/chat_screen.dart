@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:product_management_ai_app/src/core/models/chat_model.dart';
 import 'package:product_management_ai_app/src/features/chat_screen/chat_text_field.dart';
 import 'package:product_management_ai_app/src/features/chat_screen/components/chat_tile.dart';
+import 'package:product_management_ai_app/src/features/upgrade_notification/upgrade_screen.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class ChatScreen extends HookWidget {
@@ -100,37 +100,42 @@ class ChatScreen extends HookWidget {
 
     log('messages.value: ${messages.value}');
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: isLoading.value
-                  ? messages.value.length + 1
-                  : messages.value.length,
-              padding: EdgeInsets.all(16.w),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == messages.value.length) {
-                  // Show loading indicator
-                  return Align(
-                    alignment: Alignment.topLeft,
-                    child: Lottie.asset('loading'.json, height: 40.h),
-                  );
-                } else {
-                  final message = messages.value.reversed.toList()[index];
-                  return ChatTile(
-                    message: message,
-                    sender: message.type == MessageType.ai ? true : false,
-                  );
-                }
-              },
-            ),
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: isLoading.value
+                      ? messages.value.length + 1
+                      : messages.value.length,
+                  padding: EdgeInsets.all(16.w),
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == messages.value.length) {
+                      // Show loading indicator
+                      return Align(
+                        alignment: Alignment.topLeft,
+                        child: Lottie.asset('loading'.json, height: 40.h),
+                      );
+                    } else {
+                      final message = messages.value.reversed.toList()[index];
+                      return ChatTile(
+                        message: message,
+                        sender: message.type == MessageType.ai ? true : false,
+                      );
+                    }
+                  },
+                ),
+              ),
+              ChatTextField(
+                chatText: chatText,
+                sendChat: sendChat,
+                loading: isLoading.value,
+              )
+            ],
           ),
-          ChatTextField(
-            chatText: chatText,
-            sendChat: sendChat,
-            loading: isLoading.value,
-          )
+          messages.value.length > 10 ? const UpgradeScreen() : Container(),
         ],
       ),
     );
