@@ -20,7 +20,11 @@ dependencies:
   animated_text_kit: ^4.2.2
   hidden_drawer_menu: ^3.0.1
   iconsax: ^0.0.8
-  hng_authentication: ^0.0.3
+  hng_authentication: ^0.1.4
+  hngx_openai:
+    git:
+      url: https://github.com/hngx-org/openai-package.git
+      ref: main
 
 dev_dependencies:
   flutter_test:
