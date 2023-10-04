@@ -72,11 +72,11 @@ class ChatController {
     messages.value.insert(0, chat);
     userPrompts.value.add(text);
 
+    const String cookie =
+        "session=d85f8ede-bc01-4d43-a666-e0855f1a04f4.UB0HQ-UTj0RuXYgws837LV9UF90";
+
     if (userPrompts.value.length <= 1) {
       try {
-        const String cookie =
-            "session=d85f8ede-bc01-4d43-a666-e0855f1a04f4.UB0HQ-UTj0RuXYgws837LV9UF90";
-
         OpenAIRepository openAI = OpenAIRepository();
 
         final aiResponse = await openAI.getChat(text, cookie);
@@ -106,9 +106,6 @@ class ChatController {
     } else {
       print("multiple prompts");
       try {
-        const String cookie =
-            "session=d85f8ede-bc01-4d43-a666-e0855f1a04f4.UB0HQ-UTj0RuXYgws837LV9UF90";
-
         OpenAIRepository openAI = OpenAIRepository();
 
         final aiResponse =
