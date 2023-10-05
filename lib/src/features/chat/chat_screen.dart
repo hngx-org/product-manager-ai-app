@@ -1,12 +1,13 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:product_management_ai_app/src/core/controller/chat_controller.dart';
-import 'package:product_management_ai_app/src/core/models/chat_model.dart';
-import 'package:product_management_ai_app/src/features/chat_screen/chat_text_field.dart';
-import 'package:product_management_ai_app/src/features/chat_screen/components/chat_tile.dart';
+import 'package:product_management_ai_app/src/features/chat/chat_text_field.dart';
+import 'package:product_management_ai_app/src/features/chat/components/chat_tile.dart';
+import 'package:product_management_ai_app/src/features/chat/controller/chat_controller.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/features/upgrade_notification/upgrade_screen.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 

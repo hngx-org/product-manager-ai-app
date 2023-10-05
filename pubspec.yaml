@@ -21,10 +21,16 @@ dependencies:
   hidden_drawer_menu: ^3.0.1
   iconsax: ^0.0.8
   hng_authentication: ^0.1.4
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hive_generator: ^2.0.0
+  build_runner: ^2.3.3
+  get_it: ^7.6.4
   hngx_openai:
     git:
       url: https://github.com/hngx-org/openai-package.git
       ref: main
+  oktoast: ^3.3.2
 
 dev_dependencies:
   flutter_test:

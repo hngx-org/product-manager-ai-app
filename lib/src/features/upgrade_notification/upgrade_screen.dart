@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:product_management_ai_app/src/core/constants/app_color.dart';
@@ -43,7 +44,7 @@ class UpgradeScreen extends StatelessWidget {
             20.hi,
             const Text(
               textAlign: TextAlign.center,
-              "Upgrade to Access the Full Potential of Luna.ai",
+              "Upgrade to Access the Full Potential of ProdWhiz",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,

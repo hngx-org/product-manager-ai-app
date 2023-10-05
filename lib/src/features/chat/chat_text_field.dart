@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
-import 'package:product_management_ai_app/src/core/models/chat_model.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class ChatTextField extends StatelessWidget {
