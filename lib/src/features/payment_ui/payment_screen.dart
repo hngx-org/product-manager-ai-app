@@ -5,16 +5,17 @@ import 'package:in_app_payment/in_app_payment.dart';
 import 'package:product_management_ai_app/src/core/constants/app_color.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
-class PaymentScreen extends HookConsumerWidget {
+class PaymentScreen extends HookWidget {
   PaymentScreen({super.key});
 
   final pay = HNGPay();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final nameController = useTextEditingController();
     final cardController = useTextEditingController();
     final cvvController = useTextEditingController();
+    final selected = useState<bool>(true);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 3, 1, 114),
@@ -44,6 +45,61 @@ class PaymentScreen extends HookConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        !selected.value ? "\$49.99" : "\$4.99",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () => selected.value = true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: selected.value
+                                    ? const Color.fromARGB(255, 232, 232, 232)
+                                    : const Color.fromARGB(160, 245, 245, 245),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 30),
+                              child: const Text(
+                                "Monthly",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => selected.value = false,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: !selected.value
+                                    ? const Color.fromARGB(255, 232, 232, 232)
+                                    : const Color.fromARGB(160, 245, 245, 245),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 30),
+                              child: const Text(
+                                "Yearly",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      15.hi,
                       const Text(
                         "Card Number",
                         style: TextStyle(
@@ -115,12 +171,12 @@ class PaymentScreen extends HookConsumerWidget {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentScreen(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => PaymentScreen(),
+                            //   ),
+                            // );
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
