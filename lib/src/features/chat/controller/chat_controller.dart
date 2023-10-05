@@ -94,6 +94,15 @@ class ChatController {
 
         if (result == "Subscription Required") {
           notSuscribed.value = true;
+        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+          final chat = ChatMessage(
+            text:
+                "I am experiencing a high volume of requests. Please try again later.",
+            type: MessageType.ai,
+            timestamp: DateTime.now(),
+          );
+          isLoading.value = false;
+          messages.value.insert(0, chat);
         } else {
           final chat = ChatMessage(
             text: result,
@@ -135,6 +144,15 @@ class ChatController {
 
         if (result == "Subscription Required") {
           notSuscribed.value = true;
+        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+          final chat = ChatMessage(
+            text:
+                "I am experiencing a high volume of requests. Please try again later.",
+            type: MessageType.ai,
+            timestamp: DateTime.now(),
+          );
+          isLoading.value = false;
+          messages.value.insert(0, chat);
         } else {
           final chat = ChatMessage(
             text: result,
