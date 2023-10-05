@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hngx_openai/repository/openai_repository.dart';
 import 'package:product_management_ai_app/src/core/constants/product_management_keywords.dart';
+import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
 import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
+import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class ChatController {
   void sendChat(
@@ -71,9 +73,9 @@ class ChatController {
     isLoading.value = true;
     messages.value.insert(0, chat);
     userPrompts.value.add(text);
-
-    const String cookie =
-        "session=d85f8ede-bc01-4d43-a666-e0855f1a04f4.UB0HQ-UTj0RuXYgws837LV9UF90";
+    final user = await getIt<HiveService>().getData('user');
+    String cookie = user.cookie;
+    debugPrint('cookie: $cookie');
 
     if (userPrompts.value.length <= 1) {
       try {

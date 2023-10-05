@@ -4,10 +4,12 @@ import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
 import 'package:product_management_ai_app/src/features/authentication/controllers/auth_controller.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/login_screen.dart';
 import 'package:product_management_ai_app/src/features/chat/chat_screen.dart';
 import 'package:product_management_ai_app/src/features/home/home_screen.dart';
+import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class HiddenDrawer extends HookConsumerWidget {
   final String? userMessage;
@@ -60,6 +62,7 @@ class HiddenDrawer extends HookConsumerWidget {
             onTap: () {
               ref.read(authProvider.notifier).logOut().then((value) {
                 if (value) {
+                  getIt<HiveService>().clearData();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
