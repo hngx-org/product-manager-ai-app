@@ -9,6 +9,7 @@ import 'package:product_management_ai_app/src/features/authentication/controller
 import 'package:product_management_ai_app/src/features/authentication/screens/login_screen.dart';
 import 'package:product_management_ai_app/src/features/chat/chat_screen.dart';
 import 'package:product_management_ai_app/src/features/home/home_screen.dart';
+import 'package:product_management_ai_app/src/features/payment_ui/payment_screen.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class HiddenDrawer extends HookConsumerWidget {
@@ -54,6 +55,15 @@ class HiddenDrawer extends HookConsumerWidget {
         ),
         ScreenHiddenDrawer(
           ItemHiddenMenu(
+            name: "Upgrade to Pro",
+            baseStyle: textStyle,
+            selectedStyle: textStyle,
+            colorLineSelected: AppColors.primaryColor,
+          ),
+          PaymentScreen(),
+        ),
+        ScreenHiddenDrawer(
+          ItemHiddenMenu(
             name: authProv.isLoading ? '...' : "Logout",
             baseStyle: textStyle,
             selectedStyle: textStyle,
@@ -91,7 +101,7 @@ class HiddenDrawer extends HookConsumerWidget {
       ),
       // elevationAppBar: 3,
       isTitleCentered: true,
-      slidePercent: 40,
+      slidePercent: 50,
       backgroundColorAppBar: AppColors.primaryColor,
     );
   }
