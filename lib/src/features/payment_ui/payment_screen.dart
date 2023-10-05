@@ -58,12 +58,12 @@ class PaymentScreen extends HookWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InkWell(
-                            onTap: () => selected.value = !selected.value,
+                            onTap: () => selected.value = true,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: selected.value
-                                    ? Color.fromARGB(255, 232, 232, 232)
-                                    : Colors.white,
+                                    ? const Color.fromARGB(255, 232, 232, 232)
+                                    : const Color.fromARGB(160, 245, 245, 245),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               padding: const EdgeInsets.symmetric(
@@ -78,12 +78,12 @@ class PaymentScreen extends HookWidget {
                             ),
                           ),
                           InkWell(
-                            onTap: () => selected.value = !selected.value,
+                            onTap: () => selected.value = false,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: !selected.value
-                                    ? Color.fromARGB(255, 232, 232, 232)
-                                    : Color.fromARGB(160, 245, 245, 245),
+                                    ? const Color.fromARGB(255, 232, 232, 232)
+                                    : const Color.fromARGB(160, 245, 245, 245),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               padding: const EdgeInsets.symmetric(
