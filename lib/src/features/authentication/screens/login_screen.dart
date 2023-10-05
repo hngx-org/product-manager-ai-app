@@ -113,6 +113,7 @@ class LoginScreen extends HookConsumerWidget {
                             if (!formKey.currentState!.validate()) {
                               return;
                             }
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +14,7 @@ class SignUpScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authRepository = Authentication();
+    final auth = useMemoized(() => Authentication());
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final nameController = useTextEditingController();
@@ -89,8 +91,21 @@ class SignUpScreen extends HookConsumerWidget {
                       CustomElevatedButton(
                         text: 'Sign Up',
                         onPressed: () async {
-                          if (!formKey.currentState!.validate()) {
-                            return;
+                          // if (!formKey.currentState!.validate()) {
+                          //   return;
+                          // }
+
+                          try {
+                            final res = await Authentication().signUp(
+                              'talk2engineerd.avid@gmail.com',
+                              'David',
+                              'password',
+                            );
+
+                            print('res name: ${res?.name}');
+                            log('res: ${res?.name}');
+                          } on Exception catch (e) {
+                            print('An Execption occured: $e');
                           }
                         },
                       ),

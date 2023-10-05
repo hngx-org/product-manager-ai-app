@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/features/authentication/models/user.dart';
 import 'package:product_management_ai_app/src/features/onbaording/onboarding_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserAdapter());
+  await Hive.openBox('userData');
   runApp(
     const ProviderScope(
-      child: DayPilot(),
+      child: ProductWhiz(),
     ),
   );
 }
 
-class DayPilot extends StatelessWidget {
-  const DayPilot({super.key});
+class ProductWhiz extends StatelessWidget {
+  const ProductWhiz({super.key});
 
   @override
   Widget build(BuildContext context) {

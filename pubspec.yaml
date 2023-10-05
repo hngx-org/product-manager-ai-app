@@ -20,7 +20,12 @@ dependencies:
   animated_text_kit: ^4.2.2
   hidden_drawer_menu: ^3.0.1
   iconsax: ^0.0.8
-  hng_authentication: ^0.0.3
+  hng_authentication: ^0.1.4
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hive_generator: ^2.0.0
+  build_runner: ^2.3.3
+  get_it: ^7.6.4
 
 dev_dependencies:
   flutter_test:
