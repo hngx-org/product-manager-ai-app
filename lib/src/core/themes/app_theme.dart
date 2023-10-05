@@ -24,7 +24,7 @@ class AppTheme with ChangeNotifier {
         color: AppColors.textColor,
       ),
       headlineMedium: TextStyle(
-        fontSize: 24.0.sp,
+        fontSize: 30.0.sp,
         fontWeight: FontWeight.normal,
         color: AppColors.textColor,
       ),

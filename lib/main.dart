@@ -7,12 +7,15 @@ import 'package:oktoast/oktoast.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/features/authentication/models/user.dart';
 import 'package:product_management_ai_app/src/features/onbaording/onboarding_screen.dart';
+import 'package:product_management_ai_app/src/shared/utils/locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox('userData');
+  setup();
+
   runApp(
     const ProviderScope(
       child: ProdGenius(),

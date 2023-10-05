@@ -23,13 +23,14 @@ class UserAdapter extends TypeAdapter<User> {
       id: fields[3] as String,
       name: fields[4] as String,
       updatedAt: fields[5] as String,
+      cookie: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.createdAt)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(4)
       ..write(obj.name)
       ..writeByte(5)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(6)
+      ..write(obj.cookie);
   }
 
   @override

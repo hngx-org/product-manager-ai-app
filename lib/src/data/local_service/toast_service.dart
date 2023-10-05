@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 
 class ToastService {
-  void showToast(String message, {bool isError = false}) {
+  void showCustomToast(String message, {bool isError = false}) {
     _showToast(message, isError);
   }
 
@@ -37,22 +37,7 @@ class ToastService {
                 offset: const Offset(1, 1),
               ),
             ],
-            gradient: LinearGradient(
-              colors: isError
-                  ? [
-                      Colors.red.withAlpha(80),
-                      Colors.red.withAlpha(60),
-                      Colors.red.withAlpha(55),
-                    ]
-                  : [
-                      Colors.greenAccent.withAlpha(80),
-                      Colors.greenAccent.withAlpha(60),
-                      Colors.greenAccent.withAlpha(55),
-                    ],
-              stops: const [0.0, 0.4, 0.8],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            color: isError ? Colors.red : Colors.green,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(

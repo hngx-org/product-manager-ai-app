@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
-import 'package:product_management_ai_app/src/features/chat_screen/drawer/hidden_draw.dart';
+import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
 
 class HomeScreen extends StatelessWidget {

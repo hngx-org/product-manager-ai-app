@@ -5,6 +5,7 @@ class HiveService {
 
   Future<void> saveData(String key, dynamic value) async {
     await _box.put(key, value);
+    print('key: $key, value: $value');
   }
 
   dynamic getData(String key) {

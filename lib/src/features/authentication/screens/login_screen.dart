@@ -3,28 +3,25 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
-import 'package:product_management_ai_app/src/features/authentication/screens/forgot_password.dart';
+import 'package:product_management_ai_app/src/features/authentication/controllers/auth_controller.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/signup_screen.dart';
-import 'package:product_management_ai_app/src/features/authentication/widgets/finger_print_body.dart';
 import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class LoginScreen extends HookConsumerWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  final String? email;
+  const LoginScreen({
+    Key? key,
+    this.email,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = useTextEditingController();
+    final emailController = useTextEditingController(text: email);
     final passwordController = useTextEditingController();
+    final authProv = ref.watch(authProvider);
     final formKey = useMemoized(() => GlobalKey<FormState>());
-    useEffect(() {
-      Future.delayed(const Duration(seconds: 2), () {
-        if (true) {
-          bottomSheet(context, child: const FingerPrintBody());
-        }
-      });
-      return null;
-    }, const []);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -37,22 +34,34 @@ class LoginScreen extends HookConsumerWidget {
                   child: Column(
                     children: [
                       40.hi,
-                      Text(
-                        'Login',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
-                            .copyWith(
-                              fontWeight: FontWeight.w700,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Login',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                             ),
-                      ),
-                      16.hi,
-                      Text(
-                        'Get right back into your account.',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              fontWeight: FontWeight.w400,
+                            6.hi,
+                            Text(
+                              'Get right back into your account.',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
+                          ],
+                        ),
                       ),
                       40.hi,
                       CustomTextField(
@@ -72,56 +81,46 @@ class LoginScreen extends HookConsumerWidget {
                           }),
                       16.hi,
                       CustomTextField(
-                          controller: passwordController,
-                          hintText: 'Password',
-                          textObscured: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          }),
-                      8.hi,
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ForgotPassword(),
-                              ),
-                            );
-                          },
-                          overlayColor: MaterialStateProperty.all(
-                            Colors.transparent,
-                          ),
-                          child: Text(
-                            'Forgot password?',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ).padOnly(
-                            top: 8.h,
-                            bottom: 8.h,
-                            left: 8.w,
-                          ),
-                        ),
+                        controller: passwordController,
+                        hintText: 'Password',
+                        textObscured: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          } else if (value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          return null;
+                        },
                       ),
-                      32.hi,
+                      48.hi,
                       CustomElevatedButton(
+                          isLoading: authProv.isLoading,
                           text: 'Login',
                           onPressed: () {
                             if (!formKey.currentState!.validate()) {
                               return;
                             }
+                            FocusManager.instance.primaryFocus?.unfocus();
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HiddenDrawer(
-                                  pageIndex: 0,
-                                ),
-                              ),
-                            );
+                            ref
+                                .read(authProvider.notifier)
+                                .login(
+                                  emailController.text,
+                                  passwordController.text,
+                                )
+                                .then((value) {
+                              if (value) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HiddenDrawer(
+                                      pageIndex: 0,
+                                    ),
+                                  ),
+                                );
+                              }
+                            });
                           }),
                     ],
                   ),

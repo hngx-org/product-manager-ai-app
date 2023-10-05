@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive/hive.dart';
 
 part 'user.g.dart';
@@ -16,6 +17,8 @@ class User {
   String name;
   @HiveField(5)
   String updatedAt;
+  @HiveField(6)
+  String cookie;
 
   User({
     required this.createdAt,
@@ -24,5 +27,11 @@ class User {
     required this.id,
     required this.name,
     required this.updatedAt,
+    required this.cookie,
   });
+
+  @override
+  String toString() {
+    return 'User(createdAt: $createdAt, credit: $credit, email: $email, id: $id, name: $name, updatedAt: $updatedAt, cookie: $cookie)';
+  }
 }
