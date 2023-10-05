@@ -10,11 +10,15 @@ class CustomTextField extends HookWidget {
   final Duration obscureTimerDuration;
   final bool textObscured;
   final String? Function(String?)? validator;
+  final Color? filledColor;
+  final bool? num;
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.hintText,
+    this.filledColor,
+    this.num = false,
     this.textObscured = false,
     this.obscureTimerDuration = const Duration(seconds: 3),
     this.validator,
@@ -27,6 +31,7 @@ class CustomTextField extends HookWidget {
     return TextFormField(
       controller: controller,
       obscureText: isObscure.value,
+      keyboardType: num == true ? TextInputType.number : TextInputType.text,
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             fontWeight: FontWeight.w400,
           ),
@@ -57,7 +62,7 @@ class CustomTextField extends HookWidget {
             color: AppColors.errorColor,
           ),
         ),
-        fillColor: Colors.white,
+        fillColor: filledColor ?? Colors.white,
         hintText: hintText,
         suffixIcon: textObscured
             ? IconButton(

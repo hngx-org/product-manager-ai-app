@@ -2,17 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class ChatTextField extends StatelessWidget {
   final TextEditingController chatText;
   final Function sendChat;
   final bool loading;
+  final ValueNotifier<bool> isLoading;
+  final ValueNotifier<List<ChatMessage>> messages;
+  final BuildContext chatContext;
+  final ValueNotifier<bool> notSuscribed;
+  final ValueNotifier<List<String>> userPrompts;
+
   const ChatTextField(
       {super.key,
       required this.chatText,
       required this.sendChat,
-      required this.loading});
+      required this.loading,
+      required this.isLoading,
+      required this.messages,
+      required this.chatContext,
+      required this.notSuscribed,
+      required this.userPrompts});
 
   final border = const UnderlineInputBorder(
     borderSide: BorderSide(
@@ -58,7 +70,14 @@ class ChatTextField extends StatelessWidget {
                     final message = chatText.text;
                     chatText.clear();
                     FocusManager.instance.primaryFocus?.unfocus();
-                    sendChat(message);
+                    sendChat(
+                      message,
+                      isLoading,
+                      messages,
+                      chatContext,
+                      notSuscribed,
+                      userPrompts,
+                    );
                   },
                 )
               : Lottie.asset('text'.json, height: 40.h),

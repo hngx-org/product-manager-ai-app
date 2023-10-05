@@ -1,7 +1,10 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:product_management_ai_app/src/core/constants/app_color.dart';
+import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
+import 'package:product_management_ai_app/src/features/payment_ui/payment_screen.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
 class UpgradeScreen extends StatelessWidget {
@@ -43,7 +46,7 @@ class UpgradeScreen extends StatelessWidget {
             20.hi,
             const Text(
               textAlign: TextAlign.center,
-              "Upgrade to Access the Full Potential of Luna.ai",
+              "Upgrade to Access the Full Potential of ProdWhiz",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -56,7 +59,16 @@ class UpgradeScreen extends StatelessWidget {
             ),
             20.hi,
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HiddenDrawer(
+                      pageIndex: 2,
+                    ),
+                  ),
+                );
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   AppColors.defaultColor,

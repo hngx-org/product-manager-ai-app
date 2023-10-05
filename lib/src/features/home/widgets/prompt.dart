@@ -1,5 +1,5 @@
 List<String> productManagementPrompts = [
-  "Outline a step-by-step process for developing a new product from ideation to launch.",
+  // "Outline a step-by-step process for developing a new product from ideation to launch.",
   "Discuss the importance of market research in shaping a product's features and strategy.",
   "Explain the concept of a Minimum Viable Product (MVP) and its role in product development.",
   "Describe the key differences between waterfall and agile product development methodologies.",

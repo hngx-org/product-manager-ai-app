@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:product_management_ai_app/src/core/models/chat_model.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/shared/utils/extensions.dart';
 
 class ChatTile extends StatelessWidget {
