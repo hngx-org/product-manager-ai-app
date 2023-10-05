@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
+import 'package:product_management_ai_app/src/features/authentication/controllers/auth_controller.dart';
 import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
+import 'package:product_management_ai_app/src/shared/shared.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends HookConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authProv = ref.watch(authProvider);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -30,26 +37,33 @@ class HomeScreen extends StatelessWidget {
               ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: productManagementPrompts.length,
-        padding: const EdgeInsets.only(top: 10),
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (_, index) {
-          return CardWidget(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HiddenDrawer(
-                  userMessage: productManagementPrompts[index],
-                  pageIndex: 1,
-                ),
+      body: authProv.isLoading
+          ? Center(
+              child: Lottie.asset(
+                'loading'.json,
+                height: 100.h,
               ),
+            )
+          : ListView.builder(
+              itemCount: productManagementPrompts.length,
+              padding: const EdgeInsets.only(top: 10),
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (_, index) {
+                return CardWidget(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HiddenDrawer(
+                        userMessage: productManagementPrompts[index],
+                        pageIndex: 1,
+                      ),
+                    ),
+                  ),
+                  text: productManagementPrompts[index],
+                  isLast: index == productManagementPrompts.length - 1,
+                );
+              },
             ),
-            text: productManagementPrompts[index],
-            isLast: index == productManagementPrompts.length - 1,
-          );
-        },
-      ),
     );
   }
 }

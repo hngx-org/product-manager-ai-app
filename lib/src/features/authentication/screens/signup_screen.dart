@@ -136,18 +136,20 @@ class SignUpScreen extends HookConsumerWidget {
                                 emailController.text,
                                 passwordController.text,
                               )
-                              .then((value) {
-                            if (value) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(
-                                    email: emailController.text,
+                              .then(
+                            (value) {
+                              if (value) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(
+                                      email: emailController.text,
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-                          });
+                                );
+                              }
+                            },
+                          );
                         },
                       ),
                     ],

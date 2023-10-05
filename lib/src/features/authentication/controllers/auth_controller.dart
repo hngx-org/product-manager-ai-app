@@ -107,4 +107,35 @@ class AuthController with ChangeNotifier {
     }
     return false;
   }
+
+  Future<bool> logOut() async {
+    isLoading = true;
+    notifyListeners();
+    final user = await getIt<HiveService>().getData('user');
+    String email = user.email;
+    try {
+      final user = await auth.logout(
+        email,
+      );
+
+      if (user != null) {
+        ToastService().showCustomToast(
+          'You have successfully logged out',
+        );
+        isLoading = false;
+        return true;
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint('e: $e');
+      ToastService().showCustomToast(
+        'Something went wrong, please try again',
+        isError: true,
+      );
+      isLoading = false;
+      notifyListeners();
+      return false;
+    }
+    return false;
+  }
 }

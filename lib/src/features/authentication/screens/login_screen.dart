@@ -95,21 +95,22 @@ class LoginScreen extends HookConsumerWidget {
                       ),
                       48.hi,
                       CustomElevatedButton(
-                          isLoading: authProv.isLoading,
-                          text: 'Login',
-                          onPressed: () {
-                            if (!formKey.currentState!.validate()) {
-                              return;
-                            }
-                            FocusManager.instance.primaryFocus?.unfocus();
+                        isLoading: authProv.isLoading,
+                        text: 'Login',
+                        onPressed: () {
+                          if (!formKey.currentState!.validate()) {
+                            return;
+                          }
+                          FocusManager.instance.primaryFocus?.unfocus();
 
-                            ref
-                                .read(authProvider.notifier)
-                                .login(
-                                  emailController.text,
-                                  passwordController.text,
-                                )
-                                .then((value) {
+                          ref
+                              .read(authProvider.notifier)
+                              .login(
+                                emailController.text,
+                                passwordController.text,
+                              )
+                              .then(
+                            (value) {
                               if (value) {
                                 Navigator.push(
                                   context,
@@ -120,8 +121,10 @@ class LoginScreen extends HookConsumerWidget {
                                   ),
                                 );
                               }
-                            });
-                          }),
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
