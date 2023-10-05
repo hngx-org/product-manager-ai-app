@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hngx_openai/repository/openai_repository.dart';
 import 'package:product_management_ai_app/src/core/constants/product_management_keywords.dart';
 import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat.dart';
 import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 
@@ -99,6 +100,21 @@ class ChatController {
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
+          final chatList = ChatList(
+            [
+              Chat(
+                text: result,
+                isAi: true,
+                time: DateTime.now(),
+              )
+            ],
+          );
+
+          getIt<HiveService>().saveData(
+            'chat',
+            chatList,
+          );
+
           isLoading.value = false;
           messages.value.insert(0, chat);
         }
@@ -124,6 +140,21 @@ class ChatController {
             text: result,
             type: MessageType.ai,
             timestamp: DateTime.now(),
+          );
+
+          final chatList = ChatList(
+            [
+              Chat(
+                text: result,
+                isAi: true,
+                time: DateTime.now(),
+              )
+            ],
+          );
+
+          getIt<HiveService>().saveData(
+            'chat',
+            chatList,
           );
           isLoading.value = false;
           messages.value.insert(0, chat);

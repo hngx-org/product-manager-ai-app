@@ -138,4 +138,11 @@ class AuthController with ChangeNotifier {
     }
     return false;
   }
+
+  // List<String> getChats() {
+  //   ChatList user = getIt<HiveService>().getData('user');
+  //   final value = user.chatList.map((e) => e.text).toList();
+  //   log('value: $value');
+  //   return value;
+  // }
 }
