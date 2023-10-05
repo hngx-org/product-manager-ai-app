@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hngx_openai/repository/openai_repository.dart';
 import 'package:product_management_ai_app/src/core/constants/product_management_keywords.dart';
-import 'package:product_management_ai_app/src/core/models/chat_model.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 
 class ChatController {
   void sendChat(

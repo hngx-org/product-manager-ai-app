@@ -3,7 +3,7 @@ import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/features/authentication/screens/logout.dart';
-import 'package:product_management_ai_app/src/features/chat_screen/chat_screen.dart';
+import 'package:product_management_ai_app/src/features/chat/chat_screen.dart';
 import 'package:product_management_ai_app/src/features/home/home_screen.dart';
 
 class HiddenDrawer extends StatefulWidget {
