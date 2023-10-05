@@ -9,6 +9,7 @@ import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
 import 'package:product_management_ai_app/src/features/authentication/models/user.dart';
 import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat.dart';
 import 'package:product_management_ai_app/src/features/onbaording/onboarding_screen.dart';
 import 'package:product_management_ai_app/src/shared/utils/locator.dart';
 
@@ -16,6 +17,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(ChatListAdapter());
+  Hive.registerAdapter(ChatAdapter());
   await Hive.openBox('userData');
   setup();
 

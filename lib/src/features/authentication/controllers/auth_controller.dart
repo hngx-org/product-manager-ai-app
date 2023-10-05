@@ -138,4 +138,16 @@ class AuthController with ChangeNotifier {
     }
     return false;
   }
+
+  Future<String> getUserName() async {
+    final user = await getIt<HiveService>().getData('user');
+    return user.name;
+  }
+
+  // List<String> getChats() {
+  //   ChatList user = getIt<HiveService>().getData('user');
+  //   final value = user.chatList.map((e) => e.text).toList();
+  //   log('value: $value');
+  //   return value;
+  // }
 }
