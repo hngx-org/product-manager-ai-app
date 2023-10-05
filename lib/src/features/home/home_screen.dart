@@ -18,6 +18,14 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authProv = ref.watch(authProvider);
     final selectedIndex = useState(0);
+    final name = useState('');
+
+    useEffect(() {
+      authProv.getUserName().then((value) {
+        name.value = value;
+      });
+      return null;
+    }, []);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
@@ -76,25 +84,48 @@ class HomeScreen extends HookConsumerWidget {
                   height: 100.h,
                 ),
               )
-            : ListView.builder(
-                itemCount: productManagementPrompts.length,
-                padding: const EdgeInsets.only(top: 10),
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (_, index) {
-                  return CardWidget(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HiddenDrawer(
-                          userMessage: productManagementPrompts[index],
-                          pageIndex: 1,
-                        ),
-                      ),
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
                     ),
-                    text: productManagementPrompts[index],
-                    isLast: index == productManagementPrompts.length - 1,
-                  );
-                },
+                    decoration: BoxDecoration(
+                        color: AppColors.greyTextColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      'Hi, ${name.value}, Get started with by using some of our product management prompts.',
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          // color: Colors.white,
+                          ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: productManagementPrompts.length,
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, index) {
+                        return CardWidget(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HiddenDrawer(
+                                userMessage: productManagementPrompts[index],
+                                pageIndex: 1,
+                              ),
+                            ),
+                          ),
+                          text: productManagementPrompts[index],
+                          isLast: index == productManagementPrompts.length - 1,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
         const History(),
       ][selectedIndex.value],
