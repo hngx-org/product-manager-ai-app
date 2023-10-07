@@ -30,7 +30,7 @@ class PaymentScreen extends HookConsumerWidget {
           child: Column(
             children: [
               Lottie.asset(
-                'Animation - 1696684103419'.json,
+                'premium'.json,
               ),
               const Text(
                 "Pro Plan",
