@@ -87,11 +87,25 @@ class ChatController {
 
         String result = parts[1].trim();
 
+        // String filterText(String response) {
+        //   if (response.startsWith('M')) {
+        //     // If the return String is a Message
+        //     // Other definitions can come here
+        //     log("This is a Success Text");
+        //     return response.substring(8).trim();
+        //   } else {
+        //     // If the return String is an Error
+        //     // Other definitions can come here
+        //     log("This is an Error Text");
+        //     return response.substring(6).trim();
+        //   }
+        // }
+
         print(result);
 
         if (result == "Subscription Required") {
           notSuscribed.value = true;
-        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+        } else if (!aiResponse.startsWith('M')) {
           final chat = ChatMessage(
             text:
                 "I am experiencing a high volume of requests. Please try again later.",
@@ -103,13 +117,13 @@ class ChatController {
         } else {
           debugPrint('result: $result');
           final chat = ChatMessage(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
           final log = await Hive.openBox<Chat>('aichats');
           log.add(Chat(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             isAi: true,
             time: DateTime.now(),
           ));
@@ -135,7 +149,7 @@ class ChatController {
 
         if (result == "Subscription Required") {
           notSuscribed.value = true;
-        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+        } else if (!aiResponse.startsWith('M')) {
           final chat = ChatMessage(
             text:
                 "I am experiencing a high volume of requests. Please try again later.",
@@ -147,14 +161,14 @@ class ChatController {
         } else {
           debugPrint('result: $result');
           final chat = ChatMessage(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
 
           final log = await Hive.openBox<Chat>('aichats');
           log.add(Chat(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             isAi: true,
             time: DateTime.now(),
           ));
