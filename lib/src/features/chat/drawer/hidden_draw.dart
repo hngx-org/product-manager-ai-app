@@ -46,7 +46,7 @@ class HiddenDrawer extends HookConsumerWidget {
         ),
         ScreenHiddenDrawer(
           ItemHiddenMenu(
-            name: "Chat with AI",
+            name: "Chat with ProdWhiz",
             baseStyle: textStyle,
             selectedStyle: textStyle,
             colorLineSelected: AppColors.primaryColor,

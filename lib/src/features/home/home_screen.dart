@@ -10,6 +10,7 @@ import 'package:product_management_ai_app/src/features/chat/components/card_widg
 import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
 import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
+import 'package:product_management_ai_app/src/shared/utils/format_name.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -88,19 +89,43 @@ class HomeScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    margin: EdgeInsets.only(top: 16.h, bottom: 4.h),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                        color: AppColors.greyTextColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Text(
-                      'Hi, ${name.value}, Get started with by using some of our product management prompts.',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          // color: Colors.white,
+                      color: AppColors.greyTextColor.withOpacity(0.2),
+                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Hi ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(),
                           ),
+                          TextSpan(
+                            text: formatName(name.value),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          TextSpan(
+                            text:
+                                ', get started with by using some of our product management prompts.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(

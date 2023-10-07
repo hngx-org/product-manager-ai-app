@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hngx_openai/repository/openai_repository.dart';
 import 'package:product_management_ai_app/src/core/constants/product_management_keywords.dart';
 import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
+import 'package:product_management_ai_app/src/data/local_service/toast_service.dart';
 import 'package:product_management_ai_app/src/features/chat/models/chat.dart';
 import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
@@ -48,12 +49,9 @@ class ChatController {
         messages.value.insert(0, chat);
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              "You are not allowed to ask a question outside of the field of product management."),
-          duration: Duration(seconds: 3),
-        ),
+      ToastService().showCustomToast(
+        "You are not allowed to ask a question outside of the field of product management.",
+        isError: true,
       );
     }
   }
