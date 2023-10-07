@@ -166,14 +166,14 @@ class ChatTile extends HookWidget {
                         Text(
                           message.text,
                           softWrap: true,
-                          style: const TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         10.hi,
                         Text(
                           DateFormat('MMM dd, yyyy hh:mm a')
                               .format(message.timestamp),
                           style: const TextStyle(
-                            color: Colors.grey,
+                            color: Color.fromARGB(199, 238, 238, 238),
                           ),
                         )
                       ],

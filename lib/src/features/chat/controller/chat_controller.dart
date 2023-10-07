@@ -32,7 +32,7 @@ class ChatController {
 
     if (containsProductManagementKeyword) {
       aiReponse(text, isLoading, messages, context, notSuscribed, userPrompts);
-    } else if (greetings.contains(lowercasedText)) {
+    } else if (greetings.contains(lowercasedText.trim())) {
       final chat = ChatMessage(
         text: text,
         type: MessageType.user,
