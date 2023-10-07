@@ -7,7 +7,10 @@ import 'package:lottie/lottie.dart';
 import 'package:product_management_ai_app/src/core/core.dart';
 import 'package:product_management_ai_app/src/features/authentication/controllers/auth_controller.dart';
 import 'package:product_management_ai_app/src/features/chat/components/card_widget.dart';
+import 'package:product_management_ai_app/src/features/chat/components/chat_tile.dart';
+import 'package:product_management_ai_app/src/features/chat/controller/chat_controller.dart';
 import 'package:product_management_ai_app/src/features/chat/drawer/hidden_draw.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/features/home/widgets/prompt.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
 import 'package:product_management_ai_app/src/shared/utils/format_name.dart';
@@ -152,7 +155,14 @@ class HomeScreen extends HookConsumerWidget {
                   ),
                 ],
               ),
-        const History(),
+        authProv.isLoading
+            ? Center(
+                child: Lottie.asset(
+                  'loading'.json,
+                  height: 100.h,
+                ),
+              )
+            : const History(),
       ][selectedIndex.value],
     );
   }
@@ -170,19 +180,53 @@ class History extends HookConsumerWidget {
       // authProv.getChats();
       return null;
     }, []);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset(
-            'in-progress'.json,
-            height: .3.sh,
-          ),
-          SizedBox(height: 10.h),
-          Text('Still in progress...',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith()),
-        ],
-      ),
-    );
+    return FutureBuilder(
+        future: ChatController().retrieveLogs(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: SizedBox(
+                height: 300.h,
+                width: 300.w,
+                child: Lottie.asset(
+                  'loader'.json,
+                ),
+              ),
+            );
+          }
+          return snapshot.data != null && snapshot.data!.isNotEmpty
+              ? ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ChatTile(
+                      message: ChatMessage(
+                        text: snapshot.data![index].text,
+                        type: MessageType.ai,
+                        timestamp: snapshot.data![index].time,
+                        isHistory: true,
+                      ),
+                      sender: true,
+                      isLast: index == snapshot.data.length - 1,
+                    );
+                  })
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        'in-progress'.json,
+                        height: .3.sh,
+                      ),
+                      SizedBox(height: 10.h),
+                      Text('No history yet.',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith()),
+                    ],
+                  ),
+                );
+        });
   }
 }

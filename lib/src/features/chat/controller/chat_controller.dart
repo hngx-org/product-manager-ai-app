@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hngx_openai/repository/openai_repository.dart';
 import 'package:product_management_ai_app/src/core/constants/product_management_keywords.dart';
 import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
@@ -82,15 +83,11 @@ class ChatController {
 
         final aiResponse = await openAI.getChat(text, cookie);
 
-        print(aiResponse);
-
-        List<String> parts = aiResponse.split(":");
-
-        String result = parts[1].trim();
+        String result = aiResponse;
 
         print(result);
 
-        if (result == "Subscription Required") {
+        if (result == "Error: Subscription Required") {
           notSuscribed.value = true;
         } else if (result == "type 'Null' is not a subtype of type 'String'") {
           final chat = ChatMessage(
@@ -102,25 +99,18 @@ class ChatController {
           isLoading.value = false;
           messages.value.insert(0, chat);
         } else {
+          debugPrint('result: $result');
           final chat = ChatMessage(
             text: result,
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
-          final chatList = ChatList(
-            [
-              Chat(
-                text: result,
-                isAi: true,
-                time: DateTime.now(),
-              )
-            ],
-          );
-
-          getIt<HiveService>().saveData(
-            'chat',
-            chatList,
-          );
+          final log = await Hive.openBox<Chat>('aichats');
+          log.add(Chat(
+            text: result,
+            isAi: true,
+            time: DateTime.now(),
+          ));
 
           isLoading.value = false;
           messages.value.insert(0, chat);
@@ -135,12 +125,14 @@ class ChatController {
 
         final aiResponse =
             await openAI.getChatCompletions(userPrompts.value, text, cookie);
+        debugPrint('aiResponse: $aiResponse');
 
-        List<String> parts = aiResponse.split(":");
+        // List<String> parts = aiResponse.split(":");
 
-        String result = parts[1].trim();
+        // String result = parts[1].trim();
+        String result = aiResponse;
 
-        if (result == "Subscription Required") {
+        if (result == "Error: Subscription Required") {
           notSuscribed.value = true;
         } else if (result == "type 'Null' is not a subtype of type 'String'") {
           final chat = ChatMessage(
@@ -152,26 +144,20 @@ class ChatController {
           isLoading.value = false;
           messages.value.insert(0, chat);
         } else {
+          debugPrint('result: $result');
           final chat = ChatMessage(
             text: result,
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
 
-          final chatList = ChatList(
-            [
-              Chat(
-                text: result,
-                isAi: true,
-                time: DateTime.now(),
-              )
-            ],
-          );
+          final log = await Hive.openBox<Chat>('aichats');
+          log.add(Chat(
+            text: result,
+            isAi: true,
+            time: DateTime.now(),
+          ));
 
-          getIt<HiveService>().saveData(
-            'chat',
-            chatList,
-          );
           isLoading.value = false;
           messages.value.insert(0, chat);
         }
@@ -179,9 +165,17 @@ class ChatController {
         print("error: $e");
       }
     }
+  }
 
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   isLoading.value = false;
-    // });
+  void clearLogs() async {
+    final logsBox = await Hive.openBox<Chat>('aichats');
+    logsBox.clear();
+  }
+
+  Future retrieveLogs() async {
+    final logsBox = await Hive.openBox<Chat>('aichats');
+    final logs = logsBox.values.toList();
+    logs.sort((a, b) => a.time.compareTo(b.time));
+    return logs;
   }
 }

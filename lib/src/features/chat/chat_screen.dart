@@ -24,6 +24,7 @@ class ChatScreen extends HookWidget {
     final userPrompts = useState<List<String>>([]);
 
     useEffect(() {
+      ChatController().retrieveLogs();
       if (userMessage!.isNotEmpty) {
         ChatController().aiReponse(userMessage as String, isLoading, messages,
             context, notSuscribed, userPrompts);
