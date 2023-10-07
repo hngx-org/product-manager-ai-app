@@ -121,7 +121,7 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                           TextSpan(
                             text:
-                                ', get started with by using some of our product management prompts.',
+                                ', get started with ProdWhiz by using some of our product management prompts.',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
