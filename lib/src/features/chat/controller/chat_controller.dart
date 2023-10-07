@@ -83,11 +83,13 @@ class ChatController {
 
         final aiResponse = await openAI.getChat(text, cookie);
 
-        String result = aiResponse;
+        List<String> parts = aiResponse.split(":");
+
+        String result = parts[1].trim();
 
         print(result);
 
-        if (result == "Error: Subscription Required") {
+        if (result == "Subscription Required") {
           notSuscribed.value = true;
         } else if (result == "type 'Null' is not a subtype of type 'String'") {
           final chat = ChatMessage(
@@ -127,12 +129,11 @@ class ChatController {
             await openAI.getChatCompletions(userPrompts.value, text, cookie);
         debugPrint('aiResponse: $aiResponse');
 
-        // List<String> parts = aiResponse.split(":");
+        List<String> parts = aiResponse.split(":");
 
-        // String result = parts[1].trim();
-        String result = aiResponse;
+        String result = parts[1].trim();
 
-        if (result == "Error: Subscription Required") {
+        if (result == "Subscription Required") {
           notSuscribed.value = true;
         } else if (result == "type 'Null' is not a subtype of type 'String'") {
           final chat = ChatMessage(
