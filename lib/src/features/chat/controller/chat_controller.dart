@@ -32,7 +32,7 @@ class ChatController {
 
     if (containsProductManagementKeyword) {
       aiReponse(text, isLoading, messages, context, notSuscribed, userPrompts);
-    } else if (greetings.contains(lowercasedText)) {
+    } else if (greetings.contains(lowercasedText.trim())) {
       final chat = ChatMessage(
         text: text,
         type: MessageType.user,
@@ -83,13 +83,29 @@ class ChatController {
 
         final aiResponse = await openAI.getChat(text, cookie);
 
-        String result = aiResponse;
+        List<String> parts = aiResponse.split(":");
+
+        String result = parts[1].trim();
+
+        // String filterText(String response) {
+        //   if (response.startsWith('M')) {
+        //     // If the return String is a Message
+        //     // Other definitions can come here
+        //     log("This is a Success Text");
+        //     return response.substring(8).trim();
+        //   } else {
+        //     // If the return String is an Error
+        //     // Other definitions can come here
+        //     log("This is an Error Text");
+        //     return response.substring(6).trim();
+        //   }
+        // }
 
         print(result);
 
-        if (result == "Error: Subscription Required") {
+        if (result == "Subscription Required") {
           notSuscribed.value = true;
-        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+        } else if (!aiResponse.startsWith('M')) {
           final chat = ChatMessage(
             text:
                 "I am experiencing a high volume of requests. Please try again later.",
@@ -101,13 +117,13 @@ class ChatController {
         } else {
           debugPrint('result: $result');
           final chat = ChatMessage(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
           final log = await Hive.openBox<Chat>('aichats');
           log.add(Chat(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             isAi: true,
             time: DateTime.now(),
           ));
@@ -127,14 +143,13 @@ class ChatController {
             await openAI.getChatCompletions(userPrompts.value, text, cookie);
         debugPrint('aiResponse: $aiResponse');
 
-        // List<String> parts = aiResponse.split(":");
+        List<String> parts = aiResponse.split(":");
 
-        // String result = parts[1].trim();
-        String result = aiResponse;
+        String result = parts[1].trim();
 
-        if (result == "Error: Subscription Required") {
+        if (result == "Subscription Required") {
           notSuscribed.value = true;
-        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+        } else if (!aiResponse.startsWith('M')) {
           final chat = ChatMessage(
             text:
                 "I am experiencing a high volume of requests. Please try again later.",
@@ -146,14 +161,14 @@ class ChatController {
         } else {
           debugPrint('result: $result');
           final chat = ChatMessage(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
 
           final log = await Hive.openBox<Chat>('aichats');
           log.add(Chat(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             isAi: true,
             time: DateTime.now(),
           ));
