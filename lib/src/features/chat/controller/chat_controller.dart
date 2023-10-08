@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hngx_openai/repository/openai_repository.dart';
 import 'package:product_management_ai_app/src/core/constants/product_management_keywords.dart';
 import 'package:product_management_ai_app/src/data/local_service/hive_service.dart';
+import 'package:product_management_ai_app/src/data/local_service/toast_service.dart';
 import 'package:product_management_ai_app/src/features/chat/models/chat.dart';
 import 'package:product_management_ai_app/src/features/chat/models/chat_model.dart';
 import 'package:product_management_ai_app/src/shared/shared.dart';
@@ -30,7 +32,7 @@ class ChatController {
 
     if (containsProductManagementKeyword) {
       aiReponse(text, isLoading, messages, context, notSuscribed, userPrompts);
-    } else if (greetings.contains(lowercasedText)) {
+    } else if (greetings.contains(lowercasedText.trim())) {
       final chat = ChatMessage(
         text: text,
         type: MessageType.user,
@@ -48,12 +50,9 @@ class ChatController {
         messages.value.insert(0, chat);
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              "You are not allowed to ask a question outside of the field of product management."),
-          duration: Duration(seconds: 3),
-        ),
+      ToastService().showCustomToast(
+        "You are not allowed to ask a question outside of the field of product management.",
+        isError: true,
       );
     }
   }
@@ -84,17 +83,29 @@ class ChatController {
 
         final aiResponse = await openAI.getChat(text, cookie);
 
-        print(aiResponse);
-
         List<String> parts = aiResponse.split(":");
 
         String result = parts[1].trim();
+
+        // String filterText(String response) {
+        //   if (response.startsWith('M')) {
+        //     // If the return String is a Message
+        //     // Other definitions can come here
+        //     log("This is a Success Text");
+        //     return response.substring(8).trim();
+        //   } else {
+        //     // If the return String is an Error
+        //     // Other definitions can come here
+        //     log("This is an Error Text");
+        //     return response.substring(6).trim();
+        //   }
+        // }
 
         print(result);
 
         if (result == "Subscription Required") {
           notSuscribed.value = true;
-        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+        } else if (!aiResponse.startsWith('M')) {
           final chat = ChatMessage(
             text:
                 "I am experiencing a high volume of requests. Please try again later.",
@@ -104,25 +115,18 @@ class ChatController {
           isLoading.value = false;
           messages.value.insert(0, chat);
         } else {
+          debugPrint('result: $result');
           final chat = ChatMessage(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
-          final chatList = ChatList(
-            [
-              Chat(
-                text: result,
-                isAi: true,
-                time: DateTime.now(),
-              )
-            ],
-          );
-
-          getIt<HiveService>().saveData(
-            'chat',
-            chatList,
-          );
+          final log = await Hive.openBox<Chat>('aichats');
+          log.add(Chat(
+            text: aiResponse.substring(8).trim(),
+            isAi: true,
+            time: DateTime.now(),
+          ));
 
           isLoading.value = false;
           messages.value.insert(0, chat);
@@ -137,6 +141,7 @@ class ChatController {
 
         final aiResponse =
             await openAI.getChatCompletions(userPrompts.value, text, cookie);
+        debugPrint('aiResponse: $aiResponse');
 
         List<String> parts = aiResponse.split(":");
 
@@ -144,7 +149,7 @@ class ChatController {
 
         if (result == "Subscription Required") {
           notSuscribed.value = true;
-        } else if (result == "type 'Null' is not a subtype of type 'String'") {
+        } else if (!aiResponse.startsWith('M')) {
           final chat = ChatMessage(
             text:
                 "I am experiencing a high volume of requests. Please try again later.",
@@ -154,26 +159,20 @@ class ChatController {
           isLoading.value = false;
           messages.value.insert(0, chat);
         } else {
+          debugPrint('result: $result');
           final chat = ChatMessage(
-            text: result,
+            text: aiResponse.substring(8).trim(),
             type: MessageType.ai,
             timestamp: DateTime.now(),
           );
 
-          final chatList = ChatList(
-            [
-              Chat(
-                text: result,
-                isAi: true,
-                time: DateTime.now(),
-              )
-            ],
-          );
+          final log = await Hive.openBox<Chat>('aichats');
+          log.add(Chat(
+            text: aiResponse.substring(8).trim(),
+            isAi: true,
+            time: DateTime.now(),
+          ));
 
-          getIt<HiveService>().saveData(
-            'chat',
-            chatList,
-          );
           isLoading.value = false;
           messages.value.insert(0, chat);
         }
@@ -181,9 +180,17 @@ class ChatController {
         print("error: $e");
       }
     }
+  }
 
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   isLoading.value = false;
-    // });
+  void clearLogs() async {
+    final logsBox = await Hive.openBox<Chat>('aichats');
+    logsBox.clear();
+  }
+
+  Future retrieveLogs() async {
+    final logsBox = await Hive.openBox<Chat>('aichats');
+    final logs = logsBox.values.toList();
+    logs.sort((a, b) => a.time.compareTo(b.time));
+    return logs;
   }
 }
