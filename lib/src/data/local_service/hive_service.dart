@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:product_management_ai_app/src/features/chat/models/chat.dart';
 
 class HiveService {
   final Box _box = Hive.box('userData');
@@ -17,6 +18,8 @@ class HiveService {
   }
 
   Future<void> clearData() async {
+    final logsBox = await Hive.openBox<Chat>('aichats');
+    logsBox.clear();
     await _box.clear();
   }
 

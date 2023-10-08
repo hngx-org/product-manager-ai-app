@@ -247,4 +247,5 @@ List<String> productManagementTerms = [
   "What's the potential for innovation in",
   "Can you discuss the implications of artificial intelligence on",
   "I'm interested in the strategies for sustainable growth in",
+  "Explain",
 ];

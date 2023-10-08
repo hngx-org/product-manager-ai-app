@@ -17,7 +17,6 @@ dependencies:
   intl: ^0.18.0
   lottie: ^2.5.0
   flip_card: ^0.7.0
-  animated_text_kit: ^4.2.2
   hidden_drawer_menu: ^3.0.1
   iconsax: ^0.0.8
   hng_authentication: ^0.1.4
@@ -32,6 +31,7 @@ dependencies:
       ref: main
   oktoast: ^3.3.2
   in_app_payment: ^0.0.2
+  # share_plus: ^7.1.0
 
 dev_dependencies:
   flutter_test:

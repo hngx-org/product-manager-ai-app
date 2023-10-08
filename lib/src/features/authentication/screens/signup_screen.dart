@@ -37,7 +37,7 @@ class SignUpScreen extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Login',
+                              'Sign Up',
                               textAlign: TextAlign.start,
                               style: Theme.of(context)
                                   .textTheme

@@ -46,7 +46,7 @@ class HiddenDrawer extends HookConsumerWidget {
         ),
         ScreenHiddenDrawer(
           ItemHiddenMenu(
-            name: "Chat with AI",
+            name: "Chat with ProdWhiz",
             baseStyle: textStyle,
             selectedStyle: textStyle,
             colorLineSelected: AppColors.primaryColor,
@@ -70,9 +70,10 @@ class HiddenDrawer extends HookConsumerWidget {
             colorLineSelected: AppColors.primaryColor,
             selected: false,
             onTap: () {
-              ref.read(authProvider.notifier).logOut().then((value) {
+              ref.read(authProvider.notifier).logOut().then((value) async {
                 if (value) {
                   getIt<HiveService>().clearData();
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
